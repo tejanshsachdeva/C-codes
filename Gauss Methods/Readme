@@ -1,0 +1,27 @@
+1) Please make sure that the maximum number of variable shoudn't exceed 10 and is a positive number only.
+
+2) While entering coffeciants, enter the next value by pressing enter key.
+ Like if you want to input equation 2(x1)+ 3(x2) + 4(x3) = d
+     It will be inputted as
+     2 (enter key)
+     3 (enter key)
+     4 (enter key)
+     d (enter key) Then the code will print the formed array from this input.
+
+3) The code works well in finding whether the solution exists for the given set of linear equation or not( infinity or no-soln case)
+
+4) Logic for 3rd point is that, whenever a dia element is 0, it checks for the RHS of the equation i.e. for the (d part*). If RHS is zero,
+   then there will be infinitely many solution else no solution exist for the equation.(Intresting!)
+   (Arise at this conclusion after analysing the trends from every failed case)
+
+5) Trivial case is handled seperately. In Trivial case Det=0 and rhs of each equation(i.e. d* ) is zero. Solution x1=x1=x3* =0 only, exists for the given equation.
+
+6) Rest, I have tried commenting the important steps for better understanding.
+
+7) Logic for exceptional cases like of inf and no solution is same in both ques.
+
+8) If code is not working in the above mentioned way, there can be a small typo error that've crept in. Please inform me via mail before grading zero.
+
+*= refer 2nd point for reference to d and no. of var used.
+Hope you'll love the code.
+Thank You
