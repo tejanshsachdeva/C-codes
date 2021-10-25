@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int n;
+int convert(float a[][n+1],int n)   //func to convert using gauss-jordan
+{
+    int i,j,x,y,k;
+    float frac;
+    for( i=0;i<n;i++)
+    {
+      for(j=0;j<n;j++)
+      {
+         if(j!=i)  //works on all elements except diagonal
+         {
+             if(!a[i][i])   //if dia element is zero, returns location
+             return i;       //exits the loop
+
+             frac=a[j][i]/a[i][i]; //ratio of consecutive row element of same col.
+
+             for(k=0;k<n+1;k++)
+                a[j][k]=a[j][k] -( frac * a[i][k]);   //makes the element zero acc by multiplying with factor
+          }  }
+     } return -1;
+}
+
+void output(float a[][n+1],int n)
+{
+   int i;
+      printf("The solution of linear equation is\n");   //solution is the last element / dia element of same row
+      for(i=0;i<n;i++)
+      printf("x(%d)=  %.2f\n",i+1,a[i][n]/a[i][i]);  //prints out the solution
+}
+
+int main(){
+    int i,j,k,x,y;
+    float frac;
+   printf("Enter no of unknowns you are using\n");
+    scanf("%d",&n);
+    float a[n][n+1];
+    printf("Enter the coefficient with sign and press enter key\n");
+    for(int i=0;i<n;i++) {
+     for(int j=0;j<n+1;j++)
+        scanf("%f",&a[i][j]);
+    }
+     printf("Linear eqn in form of 2D array is\n");   //printing out inputted coeff in array form
+        for(int i=0;i<n;i++){
+                   for(int j=0;j<n+1;j++)
+                   printf("%.2f ",a[i][j]);
+
+                   printf("\n");
+                 } printf("\n");
+
+      int tem =  convert(a,n);      //stores the returned value(-1 or the index)
+
+       if(tem!=-1)
+       {
+       if(a[tem][n])   //if rhs of same row is zero then it will have infinitely many solutions
+         printf("\nNo solution exist for the given linear equations\n");
+         else
+         printf("\nThere are infinite solutions for the inputted equations\n");
+         return 0;
+
+       }
+    convert(a,n);
+    output(a,n);
+    return 0;
+}
