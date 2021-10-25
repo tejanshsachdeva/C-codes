@@ -1,0 +1,93 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int n;
+   int eliminate(float a[][n+1],int n)    //func to eliminate
+    {
+        int i,j,x,y,k;  //var decleration
+        float first;
+        for( i=0;i<n;i++)
+        {
+          for(j=0;j<n;j++)
+          {
+             if(j>i)   //fr lwr dia elements
+
+             {
+                 first=a[j][i]/a[i][i];  //gauss-elim contd
+                 for(k=0;k<n+1;k++)   //from 1st column till last
+                    a[j][k]=a[j][k] -( first * a[i][k]);  //make elements zero
+
+                 for( x=0;x<n;x++)
+                 {
+                     for(y=0;y<n+1;y++)
+                    if(!a[x][x])    //chk for any zero at right diag.
+                   return x;
+
+                 }
+             }
+
+          }
+        }   return -1;   //else return -1 if successfully compiled
+    }
+
+
+    void backSubstitute(float a[][n+1],float ans[],int n)    //func to substitute the soln from bottom to top
+    {
+        int i,j;
+        float sum;
+        ans[n-1]=a[n-1][n]/a[n-1][n-1];   //solution stored at last index
+
+        for(i=n-2;i>=0;i--)   //reverse loop
+        {
+            sum=0;
+            for(j=i+1;j<n;j++)
+                sum=sum+a[i][j]*ans[j];
+
+            ans[i] = (a[i][n]-sum)/a[i][i];   //storing of answers
+        }
+    }
+  void print(float ans[],int n)   //loop to print out solution array
+    {
+       int i;
+       printf("The solution of linear equation is\n");
+       for(i=0;i<n;i++)
+          printf("x(%d)=  %.2f\n",i+1,ans[i]);
+    }
+
+    int main()
+    {
+        int i,j,k,x,y;
+        float sum,first;
+        printf("Enter the no. of unknowns you are using\n");   //inputs no of var and stores in global var n
+        scanf("%d",&n);
+        float a[n][n+1],ans[n];
+        printf("Enter the coefficient with sign and press enter key\n");  //inputting of values
+        for(int i=0;i<n;i++)
+        {
+         for(int j=0;j<n+1;j++)
+            scanf("%f",&a[i][j]);
+        }
+        printf("Linear eqn in form of 2D array is\n");   //printing out inputted coeff in array form
+        for(int i=0;i<n;i++)
+                 {
+                   for(int j=0;j<n+1;j++)
+                   printf("%.2f ",a[i][j]);
+                   printf("\n");
+                 }
+        printf("\n");   //change line
+
+    int tem =  eliminate(a,n);   //stores the returned value(-1 or the index)
+       if(tem!=-1)     //if function eliminate have a zero as diagonal element
+       {
+         if(a[tem][n])    //if rhs of same row is zero then it will have infinitely many solutions
+            printf("\nNo solution exist for the given linear equation\n");
+         else
+            printf("\nThere are infinite solutions for the inputted equations\n");
+
+         return 0;
+
+       }
+        backSubstitute(a,ans,n);
+        print(ans,n);
+        return 0;
+    }
