@@ -1,0 +1,120 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define rep(i,a,b) for(int i = a;i<b;i++)
+const int N = 1e3+7;
+void eliminate(int n,float arr[][n+1]){
+    float var[N];
+    int y = 0,k=0,p=1,f=1;
+    rep(i,0,n-1){
+        rep(j,i+1,n){
+            float temp = arr[j][i]/arr[i][i];
+            rep(k,0,n+1){
+                arr[j][k] = arr[j][k] - temp*arr[i][k];
+            }
+        }
+    }
+    printf("The upper triangular matrix is :- \n");
+    rep(i,0,n){
+        rep(j,0,n){
+            printf("%.2f ",arr[i][j]);
+        }printf("\n");
+    }
+    return;
+}
+void backSubstitute(int n,float arr[][n+1]){
+    float ans[n];
+    int k = 1;
+    while ((n-k)>=0)
+    {
+        ans[n-k] = arr[n-k][n];
+        int t = k;
+        int f = 1;
+        int steps = t-1;
+        while(steps>0){
+            float temp = arr[n-t][n-f]*ans[n-f];
+            ans[n-k] = ans[n-k] - temp;
+            f++;steps--;
+        }
+        ans[n-k] = ans[n-k]/arr[n-k][n-k];
+        k++;
+    }
+    printf("The solution of the given %d equations is :- \n",n);
+    rep(i,0,n){
+        printf("(x%d) = : %.2f\n",i+1,ans[i]);
+    }
+    return;
+}
+int check(int n, float arr[][n+1]){
+    int count;
+    rep(i,0,n-1){
+        rep(j,i+1,n){
+            count = 1;
+            float r1 = arr[i][0]/arr[j][0];
+            rep(k,1,n+1){
+                float r2 = arr[i][k]/arr[j][k];
+                if(r1==r2){
+                    count++;
+                }else if(k!= n && r1!=r2){
+                    break;
+                }
+            }
+            if(count==n){
+                return 2;
+            }else if(count==n+1){
+                return 1;
+            }else{
+                continue;
+            }
+        }
+    }
+    return 0;
+}
+int main(){
+    int n;
+    printf("Enter the number of unknown variables :- ");
+    scanf("%d",&n);
+    float arr[n][n+1];
+    rep(i,0,n){
+        printf("Enter the coefficients and constant of equation %d :- \n",i+1);
+        rep(j,0,n+1){
+            scanf("%f",&arr[i][j]);
+        }
+        printf("Equation %d is :- \n",i+1);
+        rep(k,0,n+1){
+            if(k==n-1){
+                printf("%.2f(x%d)",arr[i][k],k+1);
+            }
+            else if(k==n){
+                printf(" = %.2f",arr[i][k]);
+            }else{
+                printf("%.2f(x%d) + ",arr[i][k],k+1);
+            }
+        }printf("\n");
+    }
+    //checking for no solution or infinite solution
+    if(n==2){
+        int c1 = arr[0][0]*arr[1][1];
+        int c2 = arr[0][1]*arr[1][0];
+        if((c1-c2)==0){
+            printf("No solution :(\n");
+            exit(0);
+        }else{
+            eliminate(n,arr);
+            backSubstitute(n,arr);
+        }
+    }
+    else{
+        if(check(n,arr)==1){
+            printf("Infinite Solutions :(\n");
+            exit(0);
+        }else if(check(n,arr)==2){
+            printf("No Solution :(\n");
+            exit(0);
+        }else{
+            eliminate(n,arr);
+            backSubstitute(n,arr);
+        }
+    }
+    exit(0);
+}
